@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>WTFares Venue</title>
+
+
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+    <style>
+        .list {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 100px 0;
+        }
+        
+        .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 4%;
+            height: 200px;
+            width: 31%;
+            background: #671cc9;
+            border-radius: 20px;
+            position: relative;
+        }
+        
+        .item::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            background: #3f51b5;
+            border-radius: 20px;
+            opacity: 0.8;
+            z-index: 1;
+        }
+        
+        a {
+            font-size: 14px;
+            color: #fff !important;
+            text-transform: uppercase;
+            font-weight: 500;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="pageloader" class="pageloader is-left-to-right"></div>
+    <div id="infraloader" class="infraloader is-active"></div>
+
+    <main>
+
+        <div id="demos" class="section is-light-grey">
+            <div class="container">
+                <!--Title-->
+                <div class="section-title has-text-centered pt-6">
+                    <h4 class="title is-2 is-bold is-narrow">STATIC SCREEN DESIGNS</h4>
+                </div>
+
+                <div class="list">
+                    <div class="item" style="background-image: url('./screenshots/1.png');">
+                        <a href="/1. Home Screen.html">
+                          Home Screen
+                        </a>
+                    </div>
+                    <div class="item" style="background-image: url('./screenshots/2.png');">
+                        <a href="/2. Listing Screen.html">
+                          Listing Screen
+                        </a>
+                    </div>
+                    <div class="item" style="background-image: url('./screenshots/3.png');">
+                        <a href="/3. Details Screen.html">
+                          Details Screen
+                        </a>
+                    </div>
+                    <div class="item" style="background-image: url('./screenshots/5.png');">
+                        <a href="/5. Blog.html">
+                        Blog Screen
+                        </a>
+                    </div>
+                    <div class="item" style="background-image: url('./screenshots/6.png');">
+                        <a href="/6. Post.html">
+                        Post Screen
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div class="progress-wrap" x-data="initBackToTop()" x-init="setup()" x-on:scroll.window="scroll()" x-bind:class="{
+        'active-progress': scrolled,
+        '': !scrolled,
+        }" x-on:click="scrollTop()">
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+      </svg>
+    </div>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <script src="./js/bundle.js"></script>
+</body>
+
+</html>

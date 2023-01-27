@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>5. Blog</title>
+
+
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+</head>
+
+<body>
+
+    <div id="pageloader" class="pageloader is-left-to-right"></div>
+    <div id="infraloader" class="infraloader is-active"></div>
+
+    <main>
+        <!--Main Navbar-->
+        <div class="main-navigation-light is-default" x-data="initNavbarLight()" x-on:scroll.window="scroll()" x-on:mouseleave="megamenuOpened = false" x-bind:class="{
+          'is-scrolled': scrolled,
+          '': !scrolled,
+          'is-solid': megamenuOpened,
+          '': !megamenuOpened,
+      }">
+            <div class="main-navigation--menu">
+                <div class="container">
+                    <div class="main-navigation--menu-inner">
+                        <div class="left">
+                            <a href="/" class="brand">
+                                <img class="light-logo" src="img/logo/logo-w.svg" alt="" />
+                                <img class="dark-logo" src="img/logo/logo.svg" alt="" />
+                            </a>
+                        </div>
+
+
+                        <div class="right">
+                            <button class="navigation-link is-icon mx-4 modal-trigger" data-modal="languages-modal">
+                          <i data-feather="globe"></i>
+                          </button>
+                            <div class="account-drop">
+                                <button x-on:click="openDrop('account-drop')" x-on:click.away="closeDrop('account-drop')">
+                             <span class="image is-32x32">
+                             <img
+                                x-show="$store.app.isLoggedIn === false"
+                                class="is-rounded"
+                                
+                                src="img/photo/avatar/placeholder.png"
+                                alt=""
+                                />
+                             <img
+                                x-show="$store.app.isLoggedIn === true"
+                                class="is-rounded"
+                                
+                                src="img/photo/avatar/19.jpg"
+                                alt=""
+                                />
+                             </span>
+                             </button>
+                                <div x-show.transition="accountDropOpened" class="drop-menu">
+                                    <div class="drop-menu-inner">
+                                        <a href="login.html" x-show="$store.app.isLoggedIn === false" class="drop-menu-item is-heavy">Sign In</a>
+                                        <a href="signup.html" x-show="$store.app.isLoggedIn === false" class="drop-menu-item">Register</a>
+                                        <a href="account-main.html" x-show="$store.app.isLoggedIn === false" class="drop-menu-item">Locations</a>
+                                        <hr />
+                                        <a href="host.html" class="drop-menu-item">List Spaces</a>
+                                        <a href="spaces.html" class="drop-menu-item">Explore Spaces</a>
+                                        <a href="how.html" class="drop-menu-item">Help</a>
+                                        <a x-show="$store.app.isLoggedIn === true" class="drop-menu-item" x-on:click="logout()">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="megamenu" x-bind:class="{
+        'is-active': megamenuOpened,
+        '': !megamenuOpened,
+      }">
+                <!--Megamenu 1-->
+                <div x-show="openedMegamenu === 'megamenu-1'" class="megamenu-inner">
+                    <button class="close-button" x-on:click="megamenuOpened = !megamenuOpened">
+          <i data-feather="arrow-left"></i>
+        </button>
+                    <div class="container">
+                        <div class="columns">
+                            <div class="column is-4">
+                                <div class="megamenu-block">
+                                    <div class="media">
+                                        <div class="media-left text-primary">
+                                            <span class="fas fa-2x fa-cocktail"></span>
+                                        </div>
+                                        <div class="media-content">
+                                            <h3 class="text-rainbow">Social Events</h3>
+                                            <p>
+                                                Explore a wide variety of events and services provided by members of our huge community.
+                                            </p>
+                                            <a href="events.html" class="arrow-link">
+                                                <span>Explore scheduled events</span>
+                                                <i data-feather="arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column is-4">
+                                <div class="megamenu-block has-margin">
+                                    <h4 class="text-rainbow">Trending now</h4>
+                                    <ul>
+                                        <li>
+                                            <a href="events.html" class="arrow-link">
+                                                <span>Reading groups</span>
+                                                <i data-feather="arrow-right"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="events.html" class="arrow-link">
+                                                <span>Shopping meetups</span>
+                                                <i data-feather="arrow-right"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="events.html" class="arrow-link">
+                                                <span>Gaming parties</span>
+                                                <i data-feather="arrow-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="column is-4">
+                                <div class="megamenu-block is-left-bordered">
+                                    <div class="media">
+                                        <div class="media-content">
+                                            <h3 class="text-rainbow">Schedule an event</h3>
+                                            <p>
+                                                Learn how you can start hosting events and offering services on our platform.
+                                            </p>
+                                            <a href="host.html" class="arrow-link">
+                                                <span>Become a Host</span>
+                                                <i data-feather="arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Megamenu 2-->
+                <div x-show="openedMegamenu === 'megamenu-2'" class="megamenu-inner">
+                    <button class="close-button" x-on:click="megamenuOpened = !megamenuOpened">
+          <i data-feather="arrow-left"></i>
+        </button>
+                    <div class="container">
+                        <div class="columns">
+                            <div class="column is-4">
+                                <div class="megamenu-block">
+                                    <div class="media">
+                                        <div class="media-left text-primary">
+                                            <span class="fas fa-2x fa-suitcase-rolling"></span>
+                                        </div>
+                                        <div class="media-content">
+                                            <h3 class="text-rainbow">Planned Trips</h3>
+                                            <p>
+                                                Explore a wide variety of road and luxury trips hosted by members of our community.
+                                            </p>
+                                            <a href="trips.html" class="arrow-link">
+                                                <span>Explore scheduled trips</span>
+                                                <i data-feather="arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column is-4">
+                                <div class="megamenu-block has-margin">
+                                    <h4 class="text-rainbow">Categories</h4>
+                                    <div class="tags">
+                                        <a href="home-2.html" class="tag is-rounded">Trekking</a>
+                                        <a href="home-2.html" class="tag is-rounded">Adventure</a>
+                                        <a href="home-2.html" class="tag is-rounded">Discovery</a>
+                                        <a href="home-2.html" class="tag is-rounded">Climbing</a>
+                                        <a href="home-2.html" class="tag is-rounded">Bicycle</a>
+                                        <a href="home-2.html" class="tag is-rounded">Scuba diving</a>
+                                        <a href="home-2.html" class="tag is-rounded">Safari</a>
+                                        <a href="home-2.html" class="tag is-rounded">Rafting</a>
+                                        <a href="home-2.html" class="tag is-rounded">Survival</a>
+                                        <a href="home-2.html" class="tag is-rounded">Speleology</a>
+                                        <a href="home-2.html" class="tag is-rounded">Hunting</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column is-4">
+                                <div class="megamenu-block is-left-bordered">
+                                    <div class="media">
+                                        <div class="media-content">
+                                            <h3 class="text-rainbow">Try our luxury trips</h3>
+                                            <p>
+                                                Not the adventurer type? Discover dozens of luxury trips in a wide selection of locations.
+                                            </p>
+                                            <a href="trips.html" class="arrow-link">
+                                                <span>Explore luxury trips</span>
+                                                <i data-feather="arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Megamenu 3-->
+                <div x-show="openedMegamenu === 'megamenu-3'" class="megamenu-inner">
+                    <button class="close-button" x-on:click="megamenuOpened = !megamenuOpened">
+          <i data-feather="arrow-left"></i>
+        </button>
+                    <div class="container">
+                        <div class="columns">
+                            <div class="column is-4">
+                                <div class="megamenu-block">
+                                    <div class="media">
+                                        <div class="media-left text-primary">
+                                            <span class="fas fa-2x fa-igloo"></span>
+                                        </div>
+                                        <div class="media-content">
+                                            <h3 class="text-rainbow">Flats & Homes</h3>
+                                            <p>
+                                                Explore a wide variety of events and services provided by members of our huge community.
+                                            </p>
+                                            <a href="flats.html" class="arrow-link">
+                                                <span>Find a flat nearby</span>
+                                                <i data-feather="arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column is-4">
+                                <div class="megamenu-block has-margin">
+                                    <h4 class="text-rainbow">Recently Added</h4>
+                                    <div class="block-list">
+                                        <div class="block-list-item">
+                                            <img class="is-rounded-md" src="img/photo/content/thumbs/square/9.jpg" alt="" />
+                                        </div>
+                                        <div class="block-list-item">
+                                            <img class="is-rounded-md" src="img/photo/content/thumbs/square/10.jpg" alt="" />
+                                        </div>
+                                        <div class="block-list-item">
+                                            <img class="is-rounded-md" src="img/photo/content/thumbs/square/11.jpg" alt="" />
+                                        </div>
+                                        <div class="block-list-item">
+                                            <img class="is-rounded-md" src="img/photo/content/thumbs/square/12.jpg" alt="" />
+                                        </div>
+                                        <div class="block-list-item">
+                                            <img class="is-rounded-md" src="img/photo/content/thumbs/square/13.jpg" alt="" />
+                                        </div>
+                                        <div class="block-list-item">
+                                            <img class="is-rounded-md" src="img/photo/content/thumbs/square/14.jpg" alt="" />
+                                        </div>
+                                    </div>
+                                    <a href="#" class="arrow-link mt-4">
+                                        <span>View all</span>
+                                        <i data-feather="arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="column is-4">
+                                <div class="megamenu-block is-left-bordered">
+                                    <div class="media">
+                                        <div class="media-content">
+                                            <h3 class="text-rainbow">Submit your flat</h3>
+                                            <p>
+                                                Looking to generate revenue with your unused flat? Learn more about our terms.
+                                            </p>
+                                            <a href="#" class="arrow-link">
+                                                <span>Learn more</span>
+                                                <i data-feather="arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero is-fullheight is-grey is-bold">
+            <div class="hero-body">
+                <div class="container">
+                    <div class="columns is-vcentered">
+                        <div class="column is-6">
+                            <img src="img/photo/content/slant-hero.png" alt="" />
+                        </div>
+                        <div class="column is-5 is-offset-1 b-centered-mobile b-centered-tablet-p">
+                            <div class="hero-text">
+                                <h1 class="title is-1 is-bold">Latest News.</h1>
+                                <p class="subtitle">
+                                    Explore events scheduled by members of the community and prepare to have loads of fun.
+                                </p>
+                                <div class="">
+                                    <a class="button is-primary mx-1 is-raised-hover">All Posts</a>
+                                    <a class="button is-heavy mx-1">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <!--Featured Posts-->
+                <div class="py-6">
+                    <div class="featured-categories is-x4 is-posts">
+                        <!-- Header -->
+                        <div class="header">
+                            <h4>Popular Posts</h4>
+                            <div class="links">
+                                <a class="link is-active">View All</a>
+                            </div>
+                        </div>
+
+                        <!-- Categories -->
+                        <div class="categories">
+                            <!-- Category -->
+                            <a class="category my-4">
+                                <div class="category-thumb">
+                                    <img src="img/photo/content/57.jpg" alt="" />
+                                </div>
+                                <div class="category-foot">
+                                    <span class="pt-2">
+                <span class="is-hidden-tablet-p">Oct 12, 2021</span>
+                                    <span class="separator is-hidden-tablet-p">|</span>
+                                    <span>4 min read</span>
+                                    </span>
+                                    <span class="pb-2">We open sourced our application design system</span
+              >
+              <p class="text-l2 is-sm">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat
+                enim res aperta...
+              </p>
+              <span class="is-inline-block underlink pt-2">Read more</span>
+                                </div>
+                            </a>
+                            <!-- Category -->
+                            <a class="category my-4">
+                                <div class="category-thumb">
+                                    <img src="img/photo/content/58.jpg" alt="" />
+                                </div>
+                                <div class="category-foot">
+                                    <span class="pt-2">
+                <span class="is-hidden-tablet-p">Sep 29, 2021</span>
+                                    <span class="separator is-hidden-tablet-p">|</span>
+                                    <span>6 min read</span>
+                                    </span>
+                                    <span class="pb-2">Innovation drives small businesses growth and success</span
+              >
+              <p class="text-l2 is-sm">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat
+                enim res aperta...
+              </p>
+              <span class="is-inline-block underlink pt-2">Read more</span>
+                                </div>
+                            </a>
+                            <!-- Category -->
+                            <a class="category my-4">
+                                <div class="category-thumb">
+                                    <img src="img/photo/content/63.jpg" alt="" />
+                                </div>
+                                <div class="category-foot">
+                                    <span class="pt-2">
+                <span class="is-hidden-tablet-p">Sep 24, 2021</span>
+                                    <span class="separator is-hidden-tablet-p">|</span>
+                                    <span>8 min read</span>
+                                    </span>
+                                    <span class="pb-2">You never know how people will react when you launch</span
+              >
+              <p class="text-l2 is-sm">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat
+                enim res aperta...
+              </p>
+              <span class="is-inline-block underlink pt-2">Read more</span>
+                                </div>
+                            </a>
+                            <!-- Category -->
+                            <a class="category my-4">
+                                <div class="category-thumb">
+                                    <img src="img/photo/content/59.jpg" alt="" />
+                                </div>
+                                <div class="category-foot">
+                                    <span class="pt-2">
+                <span class="is-hidden-tablet-p">Sep 18, 2021</span>
+                                    <span class="separator is-hidden-tablet-p">|</span>
+                                    <span>5 min read</span>
+                                    </span>
+                                    <span class="pb-2">How we all started the Listkit adventure</span>
+                                    <p class="text-l2 is-sm">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat enim res aperta...
+                                    </p>
+                                    <span class="is-inline-block underlink pt-2">Read more</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Featured Categories-->
+                <div class="featured-categories is-x3">
+                    <!-- Header -->
+                    <div class="header">
+                        <h4>Categories</h4>
+                    </div>
+
+                    <div class="filters pt-4">
+                        <div class="buttons">
+                            <button class="button is-small is-rounded">Popular</button>
+                            <button class="button is-small is-rounded">Most upvoted posts</button>
+                            <button class="button is-small is-rounded">Recent posts</button>
+                            <button class="button is-small is-rounded">
+            Most engaging content
+          </button>
+                            <button class="button is-small is-rounded">More Filters</button>
+                        </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="categories pb-6">
+                        <!-- Category -->
+                        <a class="category my-4">
+                            <div class="category-thumb">
+                                <img src="img/photo/content/60.jpg" alt="" />
+                            </div>
+                            <div class="category-foot">
+                                <span class="pt-2">
+              <span class="is-hidden-tablet-p">4 authors</span>
+                                <span class="separator is-hidden-tablet-p">|</span>
+                                <span>71 posts</span>
+                                </span>
+                                <span class="pb-2">Business insights</span>
+                                <span class="is-inline-block underlink">View All</span>
+                            </div>
+                        </a>
+                        <!-- Category -->
+                        <a class="category my-4">
+                            <div class="category-thumb">
+                                <img src="img/photo/content/61.jpg" alt="" />
+                            </div>
+                            <div class="category-foot">
+                                <span class="pt-2">
+              <span class="is-hidden-tablet-p">2 authors</span>
+                                <span class="separator is-hidden-tablet-p">|</span>
+                                <span>42 posts</span>
+                                </span>
+                                <span class="pb-2">New ideas & stuff</span>
+                                <span class="is-inline-block underlink">Read more</span>
+                            </div>
+                        </a>
+                        <!-- Category -->
+                        <a class="category my-4">
+                            <div class="category-thumb">
+                                <img src="img/photo/content/62.jpg" alt="" />
+                            </div>
+                            <div class="category-foot">
+                                <span class="pt-2">
+              <span class="is-hidden-tablet-p">2 authors</span>
+                                <span class="separator is-hidden-tablet-p">|</span>
+                                <span>11 posts</span>
+                                </span>
+                                <span class="pb-2">Off work zone</span>
+                                <span class="is-inline-block underlink">Read more</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!--Recent Posts-->
+                <div class="featured-categories is-spaced is-x4 is-posts">
+                    <!-- Posts -->
+                    <div class="categories">
+                        <!-- Post -->
+                        <a class="category">
+                            <div class="category-thumb">
+                                <img src="img/photo/content/64.jpg" alt="" />
+                            </div>
+                            <div class="category-foot">
+                                <span class="pt-2">
+              <span class="is-hidden-tablet-p">Sep 19, 2021</span>
+                                <span class="separator is-hidden-tablet-p">|</span>
+                                <span>6 min read</span>
+                                </span>
+                                <span class="pb-2">5 tips to become a better event and housing host</span
+            >
+            <p class="text-l2 is-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat enim
+              res aperta...
+            </p>
+            <span class="is-inline-block underlink pt-2">Read more</span>
+                            </div>
+                        </a>
+                        <!-- Post -->
+                        <a class="category">
+                            <div class="category-thumb">
+                                <img src="img/photo/content/65.jpg" alt="" />
+                            </div>
+                            <div class="category-foot">
+                                <span class="pt-2">
+              <span class="is-hidden-tablet-p">Sep 17, 2021</span>
+                                <span class="separator is-hidden-tablet-p">|</span>
+                                <span>4 min read</span>
+                                </span>
+                                <span class="pb-2">Improve the way you onboard your attendees</span>
+                                <p class="text-l2 is-sm">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat enim res aperta...
+                                </p>
+                                <span class="is-inline-block underlink pt-2">Read more</span>
+                            </div>
+                        </a>
+                        <!-- Post -->
+                        <a class="category">
+                            <div class="category-thumb">
+                                <img src="img/photo/content/66.jpg" alt="" />
+                            </div>
+                            <div class="category-foot">
+                                <span class="pt-2">
+              <span class="is-hidden-tablet-p">Sep 14, 2021</span>
+                                <span class="separator is-hidden-tablet-p">|</span>
+                                <span>10 min read</span>
+                                </span>
+                                <span class="pb-2">Our gigantic 2020 innovation hackhaton</span>
+                                <p class="text-l2 is-sm">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat enim res aperta...
+                                </p>
+                                <span class="is-inline-block underlink pt-2">Read more</span>
+                            </div>
+                        </a>
+                        <!-- Post -->
+                        <a class="category">
+                            <div class="category-thumb">
+                                <img src="img/photo/content/67.jpg" alt="" />
+                            </div>
+                            <div class="category-foot">
+                                <span class="pt-2">
+              <span class="is-hidden-tablet-p">Sep 10, 2021</span>
+                                <span class="separator is-hidden-tablet-p">|</span>
+                                <span>7 min read</span>
+                                </span>
+                                <span class="pb-2">Finding fresh new ideas for your events and trips</span
+            >
+            <p class="text-l2 is-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat enim
+              res aperta...
+            </p>
+            <span class="is-inline-block underlink pt-2">Read more</span>
+                            </div>
+                        </a>
+                        <!-- Post -->
+                        <a class="category">
+                            <div class="category-thumb">
+                                <img src="img/photo/content/46.jpg" alt="" />
+                            </div>
+                            <div class="category-foot">
+                                <span class="pt-2">
+              <span class="is-hidden-tablet-p">Sep 8, 2021</span>
+                                <span class="separator is-hidden-tablet-p">|</span>
+                                <span>5 min read</span>
+                                </span>
+                                <span class="pb-2">8 most trending categories regarding adventure trips</span
+            >
+            <p class="text-l2 is-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat enim
+              res aperta...
+            </p>
+            <span class="is-inline-block underlink pt-2">Read more</span>
+                            </div>
+                        </a>
+                        <!-- Post -->
+                        <a class="category">
+                            <div class="category-thumb">
+                                <img src="img/photo/content/11.jpg" alt="" />
+                            </div>
+                            <div class="category-foot">
+                                <span class="pt-2">
+              <span class="is-hidden-tablet-p">Sep 6, 2021</span>
+                                <span class="separator is-hidden-tablet-p">|</span>
+                                <span>7 min read</span>
+                                </span>
+                                <span class="pb-2">Marketing your products while offering and hosting events</span
+            >
+            <p class="text-l2 is-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat enim
+              res aperta...
+            </p>
+            <span class="is-inline-block underlink pt-2">Read more</span>
+                            </div>
+                        </a>
+                        <!-- Post -->
+                        <a class="category">
+                            <div class="category-thumb">
+                                <img src="img/photo/content/6.jpg" alt="" />
+                            </div>
+                            <div class="category-foot">
+                                <span class="pt-2">
+              <span class="is-hidden-tablet-p">Sep 5, 2021</span>
+                                <span class="separator is-hidden-tablet-p">|</span>
+                                <span>9 min read</span>
+                                </span>
+                                <span class="pb-2">10 tips to improve the way you engage with your audience</span
+            >
+            <p class="text-l2 is-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat enim
+              res aperta...
+            </p>
+            <span class="is-inline-block underlink pt-2">Read more</span>
+                            </div>
+                        </a>
+                        <!-- Post -->
+                        <a class="category">
+                            <div class="category-thumb">
+                                <img src="img/photo/content/28.jpg" alt="" />
+                            </div>
+                            <div class="category-foot">
+                                <span class="pt-2">
+              <span class="is-hidden-tablet-p">Sep 3, 2021</span>
+                                <span class="separator is-hidden-tablet-p">|</span>
+                                <span>12 min read</span>
+                                </span>
+                                <span class="pb-2">7 new ways to organize trips that are ecologicaly compliant</span
+            >
+            <p class="text-l2 is-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat enim
+              res aperta...
+            </p>
+            <span class="is-inline-block underlink pt-2">Read more</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="py-6">
+                    <div class="buttons is-centered py-4">
+                        <a class="button is-primary is-raised-hover">Load More News</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-head">
+                <div class="head-text">
+                    <h3>Have any questions?</h3>
+                    <p>Our support team answers your questions</p>
+                </div>
+                <div class="head-action">
+                    <div class="buttons">
+                        <a href="help-center.html" class="button is-primary raised action-button is-raised-hover">Help Center</a
+            >
+            <a href="help-center.html" target="_blank" class="button chat-button"
+              >Chat with us</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="columns footer-body">
+        <!-- Column -->
+        <div class="column is-4">
+          <div class="p-t-10 p-b-10">
+            <img class="small-footer-logo" src="img/logo/logo.svg" alt="" />
+            <div class="footer-description p-t-10 p-b-10">
+              WTFares is built for developers and designers. Its modular approach
+              lets you create awesome webapps with incredible layouts and
+              elements.
+            </div>
+          </div>
+          <div>
+            <span class="moto"
+              >Designed and coded with <ion-icon name="heart"></ion-icon> by Wizgle.</span
+            >
+          </div>
+        </div>
+        <!-- Column -->
+        <div class="column is-7 is-offset-1">
+          <div class="columns is-flex-tablet-p">
+            <!-- Column -->
+            <div class="column">
+              <ul class="footer-column">
+                <li class="column-header">Services</li>
+  
+                <li class="column-item"><a href="events.html">Events</a></li>
+                        <li class="column-item"><a href="flats.html">Flats</a></li>
+                        <li class="column-item"><a href="trips.html">Trips</a></li>
+                        <li class="column-item">
+                            <a href="corporate.html">Corporate</a>
+                        </li>
+                        </ul>
+                    </div>
+                    <!-- Column -->
+                    <div class="column">
+                        <ul class="footer-column">
+                            <li class="column-header">Links</li>
+                            <li class="column-item"><a href="signup.html">Register</a></li>
+                            <li class="column-item"><a href="login.html">Sign In</a></li>
+                            <li class="column-item"><a href="blog.html">News</a></li>
+                            <li class="column-item"><a href="careers.html">Careers</a></li>
+                        </ul>
+                    </div>
+                    <!-- Column -->
+                    <div class="column">
+                        <ul class="footer-column">
+                            <li class="column-header">Help</li>
+                            <li class="column-item"><a href="host.html">Host an event</a></li>
+                            <li class="column-item"><a href="how.html">How it works</a></li>
+                            <li class="column-item"><a href="support.html">Support</a></li>
+                            <li class="column-item">
+                                <a href="help-center.html">Help Center</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Column -->
+                    <div class="column">
+                        <ul class="footer-column">
+                            <li class="column-header">Legal</li>
+
+                            <li class="column-item"><a href="#">Terms of Service</a></li>
+                            <li class="column-item"><a href="#">Privacy policy</a></li>
+                            <li class="column-item"><a href="contact.html">Contact</a></li>
+                            <li class="column-item">
+                                <a class="modal-trigger" data-modal="languages-modal">Language: EN</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <p>
+          &copy; 2021-2022 | <a href="https://cssninja.io">Wizgle</a> | All Rights Reserved.
+                                </p>
+                                <div>
+                                    <div class="social-links">
+                                        <a href="#"><i data-feather="facebook"></i></a>
+                                        <a href="#"><i data-feather="twitter"></i></a>
+                                        <a href="#"><i data-feather="linkedin"></i></a>
+                                        <a href="#"><i data-feather="instagram"></i></a>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+    </footer>
+
+    <div class="progress-wrap" x-data="initBackToTop()" x-init="setup()" x-on:scroll.window="scroll()" x-bind:class="{
+      'active-progress': scrolled,
+      '': !scrolled,
+      }" x-on:click="scrollTop()">
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+    </svg>
+    </div>
+
+    <div id="languages-modal" class="modal">
+        <div class="modal-background modal-dismiss"></div>
+        <div class="modal-content">
+            <!--Modal card-->
+            <div class="card">
+                <header class="card-header">
+                    <div class="card-header-title">
+                        <span>Select a language</span>
+                    </div>
+                    <button class="modal-dismiss">
+            <span class="icon">
+              <i data-feather="x"></i>
+            </span>
+          </button>
+                </header>
+                <div class="card-content">
+                    <div class="check-cards-group">
+                        <!--Card-->
+                        <div class="check-card">
+                            <input type="radio" name="language_selection" checked />
+                            <div class="check-card-inner">
+                                <img src="img/icons/flags/united-states-of-america.svg" alt="" />
+                                <div class="meta">
+                                    <span>English [US]</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Card-->
+                        <div class="check-card">
+                            <input type="radio" name="language_selection" />
+                            <div class="check-card-inner">
+                                <img src="img/icons/flags/england.svg" alt="" />
+                                <div class="meta">
+                                    <span>English [UK]</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Card-->
+                        <div class="check-card">
+                            <input type="radio" name="language_selection" />
+                            <div class="check-card-inner">
+                                <img src="img/icons/flags/france.svg" alt="" />
+                                <div class="meta">
+                                    <span>French [FR]</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Card-->
+                        <div class="check-card">
+                            <input type="radio" name="language_selection" />
+                            <div class="check-card-inner">
+                                <img src="img/icons/flags/canada.svg" alt="" />
+                                <div class="meta">
+                                    <span>French [CA]</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Card-->
+                        <div class="check-card">
+                            <input type="radio" name="language_selection" />
+                            <div class="check-card-inner">
+                                <img src="img/icons/flags/germany.svg" alt="" />
+                                <div class="meta">
+                                    <span>German</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Card-->
+                        <div class="check-card">
+                            <input type="radio" name="language_selection" />
+                            <div class="check-card-inner">
+                                <img src="img/icons/flags/spain.svg" alt="" />
+                                <div class="meta">
+                                    <span>Spanish</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Card-->
+                        <div class="check-card">
+                            <input type="radio" name="language_selection" />
+                            <div class="check-card-inner">
+                                <img src="img/icons/flags/portugal.svg" alt="" />
+                                <div class="meta">
+                                    <span>Portuguese</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Card-->
+                        <div class="check-card">
+                            <input type="radio" name="language_selection" />
+                            <div class="check-card-inner">
+                                <img src="img/icons/flags/brazil.svg" alt="" />
+                                <div class="meta">
+                                    <span>Portuguese [BR]</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Card-->
+                        <div class="check-card">
+                            <input type="radio" name="language_selection" />
+                            <div class="check-card-inner">
+                                <img src="img/icons/flags/china.svg" alt="" />
+                                <div class="meta">
+                                    <span>Chinese</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Card-->
+                        <div class="check-card">
+                            <input type="radio" name="language_selection" />
+                            <div class="check-card-inner">
+                                <img src="img/icons/flags/thailand.svg" alt="" />
+                                <div class="meta">
+                                    <span>Thai</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <script src="./js/bundle.js"></script>
+</body>
+
+</html>
